@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }}: Accueil{% endblock %}
+
+{% block body %}
+
+    {% form_theme formBook 'bootstrap_5_layout.html.twig' %}
+
+    <div class="container">
+        {{ form(formBook) }}
+    </div>
+
+{% endblock %}

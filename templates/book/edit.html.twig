@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme book_form 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} :: edit Book
+{% endblock %}
+
+{% block body %}
+    <h2>Editer un livre</h2>
+    <div class="flex justify-content">
+        {{ form(book_form) }}
+    </div>
+{% endblock %}
