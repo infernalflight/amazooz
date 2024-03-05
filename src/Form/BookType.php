@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Book;
+use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -57,6 +59,15 @@ class BookType extends AbstractType
                     'PUBLISHED' => 'PUBLISHED',
                     'RETIRED' => 'RETIRED'
                 ],
+                'row_attr' => [
+                    'class' => 'input-group mb-3'
+                ]
+            ])
+            ->add('category', EntityType::class, [
+                'required' => false,
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'placeholder' => '--Veuillez choisir une catégorie--',
                 'row_attr' => [
                     'class' => 'input-group mb-3'
                 ]

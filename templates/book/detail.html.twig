@@ -4,6 +4,9 @@
 
 {% block body %}
     <h2>Detail</h2>
+    {% if book.category is not empty %}
+        <span class="badge badge-secondary">{{ book.category.name }}</span>
+    {% endif %}
     <ul>
         <li>Titre: {{ book.title }}</li>
         <li>Author: {{ book.author }}</li>
