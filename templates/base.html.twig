@@ -12,6 +12,12 @@
     <body>
         <h1><img id="logo" src="{{ asset('images/logo.png') }}" />Amazooz</h1>
         <p>Des livres pas chers et de bonne tenue</p>
+        <nav>
+            <ul style="display:flex; flex-direction: row;list-style: none;">
+                <li style="padding: 5px;"><a href="{{ path('book_list') }}">Books</a></li>
+                <li style="padding: 5px;"><a href="{{ path('book_create') }}">Create a Book</a></li>
+            </ul>
+        </nav>
         {% for group, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>
