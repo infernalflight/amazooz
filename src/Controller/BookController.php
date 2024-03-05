@@ -28,7 +28,7 @@ class BookController extends AbstractController
             if ($form->get('picture_file')->getData() instanceof UploadedFile) {
                 $pictureFile = $form->get('picture_file')->getData();
                 $fileName = $slugger->slug($book->getTitle()) . '-' . uniqid() . '.' . $pictureFile->guessExtension();
-                $pictureFile->move('uploads', $fileName);
+                $pictureFile->move($this->getParameter('picture_dir'), $fileName);
                 $book->setPicture($fileName);
             }
 
@@ -58,7 +58,7 @@ class BookController extends AbstractController
             if ($form->get('picture_file')->getData() instanceof UploadedFile) {
                 $pictureFile = $form->get('picture_file')->getData();
                 $fileName = $slugger->slug($book->getTitle()) . '-' . uniqid() . '.' . $pictureFile->guessExtension();
-                $pictureFile->move('uploads', $fileName);
+                $pictureFile->move($this->getParameter('picture_dir'), $fileName);
                 $book->setPicture($fileName);
             }
 

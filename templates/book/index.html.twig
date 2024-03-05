@@ -7,7 +7,7 @@
     <ul>
     {% for book in books %}
         <li>{% if book.picture is not empty %}
-                <img src="{{ asset('uploads/' ~ book.picture) }}" width="50px"/>
+                <img src="{{ asset(picture_dir ~ '/' ~ book.picture) }}" width="50px"/>
             {% endif %}
             {{ book.title }} by {{ book.author }} ({{ book.publishedDate|date('d/m/Y') }})&nbsp;
             <a href="{{ path('book_detail', {'id' : book.id}) }}" class="btn btn-primary">Voir</a>
