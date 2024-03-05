@@ -7,21 +7,30 @@ use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class BookController extends AbstractController
 {
 
     #[Route('/book/create', name:'book_create')]
-    public function create(Request $request, EntityManagerInterface $em): Response
+    public function create(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($form->get('picture_file')->getData() instanceof UploadedFile) {
+                $pictureFile = $form->get('picture_file')->getData();
+                $fileName = $slugger->slug($book->getTitle()) . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+                $pictureFile->move('uploads', $fileName);
+                $book->setPicture($fileName);
+            }
 
             $em->persist($book);
             $em->flush();
@@ -38,13 +47,20 @@ class BookController extends AbstractController
     }
 
     #[Route('/book/update/{id}', name:'book_update', requirements: ['id' => '\d+'])]
-    public function update(int $id, Request $request, EntityManagerInterface $em, BookRepository $bookRepository): Response
+    public function update(int $id, Request $request, EntityManagerInterface $em, BookRepository $bookRepository, SluggerInterface $slugger): Response
     {
         $book = $bookRepository->find($id);
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($form->get('picture_file')->getData() instanceof UploadedFile) {
+                $pictureFile = $form->get('picture_file')->getData();
+                $fileName = $slugger->slug($book->getTitle()) . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+                $pictureFile->move('uploads', $fileName);
+                $book->setPicture($fileName);
+            }
 
             $em->persist($book);
             $em->flush();

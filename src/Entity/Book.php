@@ -45,6 +45,9 @@ class Book
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedDate = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -138,6 +141,18 @@ class Book
     public function setUpdatedDate(): static
     {
         $this->updatedDate = new \DateTime();
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }
