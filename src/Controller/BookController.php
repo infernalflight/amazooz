@@ -13,10 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+#[Route('/book', name:'book')]
 class BookController extends AbstractController
 {
-
-    #[Route('/book/create', name:'book_create')]
+    #[Route('/create', name:'_create')]
     public function create(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         $book = new Book();
@@ -46,10 +46,9 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/book/update/{id}', name:'book_update', requirements: ['id' => '\d+'])]
-    public function update(int $id, Request $request, EntityManagerInterface $em, BookRepository $bookRepository, SluggerInterface $slugger): Response
+    #[Route('/update/{id}', name:'_update', requirements: ['id' => '\d+'])]
+    public function update(Book $book, Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
-        $book = $bookRepository->find($id);
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
@@ -76,7 +75,7 @@ class BookController extends AbstractController
 
     }
 
-    #[Route('/book/list', name: 'book_list')]
+    #[Route('/list', name: '_list')]
     public function list(BookRepository $bookRepository): Response
     {
         $books = $bookRepository->findAll();
@@ -86,11 +85,9 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/book/detail/{id}', name: 'book_detail', requirements: ['id' => '\d+'])]
-    public function detail(int $id, BookRepository $bookRepository): Response
+    #[Route('/detail/{id}', name: '_detail', requirements: ['id' => '\d+'])]
+    public function detail(Book $book): Response
     {
-        $book = $bookRepository->find($id);
-
         return $this->render('book/detail.html.twig', [
             'book' => $book
         ]);
