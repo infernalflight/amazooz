@@ -53,11 +53,18 @@ class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             if ($form->get('picture_file')->getData() instanceof UploadedFile) {
                 $pictureFile = $form->get('picture_file')->getData();
                 $fileName = $slugger->slug($book->getTitle()) . '-' . uniqid() . '.' . $pictureFile->guessExtension();
                 $pictureFile->move($this->getParameter('picture_dir'), $fileName);
+
+                if (!empty($book->getPicture())) {
+                    $picturePath = $this->getParameter('picture_dir') . '/' . $book->getPicture();
+                    if (file_exists($picturePath)) {
+                        unlink($picturePath);
+                    }
+                }
+
                 $book->setPicture($fileName);
             }
 
