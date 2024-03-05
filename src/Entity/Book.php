@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity()]
 #[ORM\Table(name: 'Books')]
+#[ORM\HasLifecycleCallbacks]
 class Book
 {
     #[ORM\Id]
@@ -120,9 +121,10 @@ class Book
         return $this->createdDate;
     }
 
-    public function setCreatedDate(\DateTimeInterface $createdDate): static
+    #[ORM\PrePersist]
+    public function setCreatedDate(): static
     {
-        $this->createdDate = $createdDate;
+        $this->createdDate = new \DateTime();
 
         return $this;
     }
@@ -132,9 +134,10 @@ class Book
         return $this->updatedDate;
     }
 
-    public function setUpdatedDate(?\DateTimeInterface $updatedDate): static
+    #[ORM\PreUpdate]
+    public function setUpdatedDate(): static
     {
-        $this->updatedDate = $updatedDate;
+        $this->updatedDate = new \DateTime();
 
         return $this;
     }

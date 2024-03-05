@@ -9,6 +9,11 @@
 {% block body %}
     <h2>Editer un livre</h2>
     <div class="flex justify-content">
-        {{ form(book_form) }}
+        {{ form_start(book_form, {'attr' : {'class' : 'une-classe' }}) }}
+
+        {{ form_widget(book_form) }}
+
+
+        {{ form_end(book_form) }}
     </div>
 {% endblock %}

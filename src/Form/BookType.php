@@ -22,6 +22,9 @@ class BookType extends AbstractType
             ->add('title', TextType::class, [
                 'row_attr' => [
                     'class' => 'input-group mb-3'
+                ],
+                'attr' => [
+                    'class' => 'une-autre-classe'
                 ]
             ])
             ->add('author', TextType::class, [
@@ -54,19 +57,6 @@ class BookType extends AbstractType
                     'PUBLISHED' => 'PUBLISHED',
                     'RETIRED' => 'RETIRED'
                 ],
-                'row_attr' => [
-                    'class' => 'input-group mb-3'
-                ]
-            ])
-            ->add('createdDate', DateTimeType::class, [
-                'widget' => 'single_text',
-                'row_attr' => [
-                    'class' => 'input-group mb-3'
-                ]
-            ])
-            ->add('updatedDate', DateTimeType::class, [
-                'widget' => 'single_text',
-                'required' => false,
                 'row_attr' => [
                     'class' => 'input-group mb-3'
                 ]

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} :: Detail{% endblock %}
+
+{% block body %}
+    <h2>Detail</h2>
+    <ul>
+        <li>Titre: {{ book.title }}</li>
+        <li>Author: {{ book.author }}</li>
+        <li>Status: {{ book.status }}</li>
+    </ul>
+    <br>
+    <a href="{{ path('book_update', {'id' : book.id }) }}" class="btn btn-primary">Editer</a>
+{% endblock %}
