@@ -85,7 +85,7 @@ class BookController extends AbstractController
     #[Route('/list', name: '_list')]
     public function list(BookRepository $bookRepository): Response
     {
-        $books = $bookRepository->findAll();
+        $books = $bookRepository->findBooksWithCategory();
 
         return $this->render('book/index.html.twig', [
             'books' => $books
