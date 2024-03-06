@@ -11,14 +11,21 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/book', name:'book')]
+#[IsGranted('ROLE_USER')]
 class BookController extends AbstractController
 {
     #[Route('/create', name:'_create')]
+    #[IsGranted('ROLE_CONTRIB')]
     public function create(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
+        if (\in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            throw $this->createAccessDeniedException("Pas le droit, t'es un admin");
+        }
+
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -47,6 +54,7 @@ class BookController extends AbstractController
     }
 
     #[Route('/update/{id}', name:'_update', requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function update(Book $book, Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(BookType::class, $book);

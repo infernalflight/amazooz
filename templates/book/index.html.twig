@@ -6,7 +6,7 @@
     <h2>Catalogue</h2>
     <ul>
     {% for book in books %}
-        <li><span class="badge badge-secondary">{{ book.category.name }}</span>
+        <li><span class="badge badge-secondary">{{ book.category.name|default('') }}</span>
             {% if book.picture is not empty %}
                 <img src="{{ asset(picture_dir ~ '/' ~ book.picture) }}" width="50px"/>
             {% endif %}

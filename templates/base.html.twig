@@ -15,7 +15,14 @@
         <nav>
             <ul style="display:flex; flex-direction: row;list-style: none;">
                 <li style="padding: 5px;"><a href="{{ path('book_list') }}">Books</a></li>
-                <li style="padding: 5px;"><a href="{{ path('book_create') }}">Create a Book</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li style="padding: 5px;"><a href="{{ path('book_create') }}">Create a Book</a></li>
+                {% endif %}
+                {% if is_granted('IS_AUTHENTICATED') %}
+                    <li style="padding: 5px;"><a href="{{ path('app_logout') }}">Se deconnecter</a></li>
+                {% else %}
+                    <li style="padding: 5px;"><a href="{{ path('app_login') }}">Se connecter</a></li>
+                {% endif %}
             </ul>
         </nav>
         {% for group, messages in app.flashes %}

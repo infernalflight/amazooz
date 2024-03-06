@@ -64,12 +64,13 @@ class BookRepository extends ServiceEntityRepository
         dd($query->getQuery()->getResult());
     }
 
-
     public function findBooksWithCategory() {
         return $this->createQueryBuilder('b')
             ->addOrderBy('b.title', 'ASC')
             ->leftJoin('b.category', 'category')
             ->addSelect('category')
+            ->setFirstResult(10)
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult();
     }
