@@ -25,6 +25,7 @@
                 {% endif %}
             </ul>
         </nav>
+
         {% for group, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ group }}" role="alert">{{ message }}</div>

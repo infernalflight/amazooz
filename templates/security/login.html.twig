@@ -23,6 +23,16 @@
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
+    <div class="form-check form-switch input-group mb-3">
+        <div class="form-check">
+            <input id="remember_me" type="checkbox" name="_remember_me" class="form-check-input">
+            <label class="form-check-label" for="remember_me">
+                Se souvenir de moi
+            </label>
+        </div>
+    </div>
+
+
 
     <button class="btn btn-lg btn-primary" type="submit">
         Sign in
