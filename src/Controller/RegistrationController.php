@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Helper\Sender;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Sender $sender): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -33,7 +34,11 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
+
+            $text = "Un nouvel utilisateur est arrivé chez nous : " . $user->getEmail() . ". Souhaitons lui bonne chance sur Amazooz !!";
+
+            $sender->sendEmail('Nouvelle inscription sur Amazooz', $text, 'admin@amazooz.com');
+            $sender->sendEmail('Bienvenue sur Amazooz', 'Voila, voila...', $user->getEmail());
 
             return $this->redirectToRoute('app_login');
         }
