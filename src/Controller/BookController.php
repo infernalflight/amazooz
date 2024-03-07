@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
+use App\Service\Censurator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -20,12 +21,8 @@ class BookController extends AbstractController
 {
     #[Route('/create', name:'_create')]
     #[IsGranted('ROLE_CONTRIB')]
-    public function create(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    public function create(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, Censurator $censurator): Response
     {
-        if (\in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-            throw $this->createAccessDeniedException("Pas le droit, t'es un admin");
-        }
-
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -39,6 +36,9 @@ class BookController extends AbstractController
                 $book->setPicture($fileName);
             }
 
+            $purifiedTitle = $censurator->purify($book->getTitle());
+            $book->setTitle($purifiedTitle);
+
             $em->persist($book);
             $em->flush();
 
@@ -46,7 +46,6 @@ class BookController extends AbstractController
             return $this->redirectToRoute('book_list');
 
         }
-
 
         return $this->render('book/edit.html.twig', [
             'book_form' => $form
